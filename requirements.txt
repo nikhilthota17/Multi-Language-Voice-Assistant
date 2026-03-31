@@ -1,0 +1,10 @@
+streamlit
+SpeechRecognition
+PyAudio
+deep-translator
+langdetect
+python-dotenv
+groq
+gTTS
+playsound
+yt-dlp
