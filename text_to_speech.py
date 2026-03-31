@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from gtts import gTTS
 import playsound
 import os
@@ -18,25 +18,4 @@ def speak(text, lang="en"):
         os.remove(filename)
 
     except Exception as e:
-=======
-from gtts import gTTS
-import playsound
-import os
-
-def speak(text, lang="en"):
-    try:
-        if not text:
-            return
-
-        print("Speaking:", text)
-
-        tts = gTTS(text=text, lang=lang)
-        filename = "voice.mp3"
-        tts.save(filename)
-
-        playsound.playsound(filename)
-        os.remove(filename)
-
-    except Exception as e:
->>>>>>> 3fd4ff1b9efcd09783e97e4d36e9d336665ac9fe
         print("TTS Error:", e)
