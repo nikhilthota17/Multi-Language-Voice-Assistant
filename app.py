@@ -223,17 +223,31 @@ if user_input := st.chat_input("Or type your message here..."):
 
 if st.session_state.system_status == "listening":
     with st.spinner("🎙️ Listening carefully..."):
-        text = listen()
+        text = listen()   # ✅ FIRST get input
 
-    if text and text.lower() != "error":
-        st.session_state.messages.append({"role": "user", "content": text})
+    # ✅ THEN check
+    if text == "VOICE_NOT_SUPPORTED":
+        st.session_state.messages.append({
+            "role": "assistant",
+            "content": "🎤 Voice input is not supported in web. Please type your message."
+        })
+        st.session_state.system_status = "idle"
+        st.rerun()
+
+    elif text and text.lower() != "error":
+        st.session_state.messages.append({
+            "role": "user",
+            "content": text
+        })
         st.session_state.system_status = "thinking"
+
     else:
         st.session_state.messages.append({
             "role": "assistant",
             "content": "Sorry, I missed that. Could you please try again?"
         })
         st.session_state.system_status = "idle"
+
     st.rerun()
 
 elif st.session_state.system_status == "thinking":
