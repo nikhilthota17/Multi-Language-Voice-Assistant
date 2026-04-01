@@ -5,4 +5,4 @@ langdetect
 python-dotenv
 groq
 gTTS
-yt-dlp  
+yt-dlp
