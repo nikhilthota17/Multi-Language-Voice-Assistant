@@ -1,131 +1,118 @@
 import webbrowser
 import os
+import platform
+import subprocess
+import urllib.parse
 import yt_dlp
 
-from speech_to_text import listen
-from translator import translate_text
-from text_to_speech import speak
-from ai_response import get_ai_response
+
+def open_app(app_name: str):
+    system = platform.system().lower()
+
+    try:
+        if "windows" in system:
+            if app_name == "notepad":
+                os.system("notepad")
+            elif app_name == "calculator":
+                os.system("calc")
+            else:
+                os.system(app_name)
+
+        elif "linux" in system:
+            subprocess.Popen([app_name])
+
+        elif "darwin" in system:
+            subprocess.Popen(["open", "-a", app_name])
+
+    except Exception:
+        pass
 
 
-# 🔹 Language Selection
-def choose_language():
-    while True:
-        speak("Please say your language. English, Telugu, or Hindi.", "en")
+def play_youtube(query):
+    try:
+        ydl_opts = {
+            "quiet": True,
+            "skip_download": True,
+            "default_search": "ytsearch1"
+        }
 
-        text = listen()
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(query, download=False)
 
-        if not text or text == "Error":
-            continue
+            if "entries" in info:
+                video = info["entries"][0]
+            else:
+                video = info
 
-        text = text.lower()
+            url = f"https://www.youtube.com/watch?v={video['id']}"
+            webbrowser.open(url)
+            return f"Playing {query}"
 
-        if "english" in text:
-            speak("English selected", "en")
-            return "en"
-
-        elif "telugu" in text:
-            speak("తెలుగు ఎంపిక చేయబడింది", "te")
-            return "te"
-
-        elif "hindi" in text:
-            speak("हिंदी चुनी गई है", "hi")
-            return "hi"
-
-        else:
-            speak("Sorry, try again.", "en")
+    except Exception:
+        return "Unable to play video."
 
 
-# 🔹 Command Handling
 def handle_commands(text):
-    text = text.lower()
+    if not text:
+        return None
 
-    if "play" in text:
-        query = text.replace("play", "").strip()
+    text = text.lower().strip()
 
+    # Exit
+    if any(word in text for word in ["bye", "goodbye", "stop", "exit"]):
+        return "Goodbye!"
+
+    # Play song/video
+    if text.startswith("play "):
+        query = text.replace("play", "", 1).strip()
         if query:
-            try:
-                ydl_opts = {
-                    'quiet': True,
-                    'skip_download': True,
-                    'default_search': 'ytsearch',
-                    'js_runtimes': {'node': {}},
-                }
+            return play_youtube(query)
 
-                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                    info = ydl.extract_info(query, download=False)
-                    video = info['entries'][0]
-                    video_id = video['id']
-
-                    url = f"https://www.youtube.com/watch?v={video_id}"
-                    webbrowser.open(url)
-
-                return f"Playing {query}"
-
-            except Exception as e:
-                print("Error:", e)
-                return "Sorry, couldn't play"
-
-    elif "search" in text:
-        import urllib.parse
-        query = text.replace("search", "").strip()
-
+    # Search google
+    if text.startswith("search "):
+        query = text.replace("search", "", 1).strip()
         if query:
             url = f"https://www.google.com/search?q={urllib.parse.quote(query)}"
             webbrowser.open(url)
             return f"Searching {query}"
 
-    elif "whatsapp" in text:
-        webbrowser.open("https://web.whatsapp.com")
-        return "Opening WhatsApp"
-
-    elif "youtube" in text:
+    # Open websites
+    if "youtube" in text:
         webbrowser.open("https://www.youtube.com")
         return "Opening YouTube"
 
-    elif "notepad" in text:
-        os.system("notepad")
+    if "whatsapp" in text:
+        webbrowser.open("https://web.whatsapp.com")
+        return "Opening WhatsApp"
+
+    if "gmail" in text:
+        webbrowser.open("https://mail.google.com")
+        return "Opening Gmail"
+
+    if "google" in text:
+        webbrowser.open("https://www.google.com")
+        return "Opening Google"
+
+    # Open system apps
+    if "notepad" in text:
+        open_app("notepad")
         return "Opening Notepad"
 
-    elif "calculator" in text:
-        os.system("calc")
+    if "calculator" in text:
+        open_app("calculator")
         return "Opening Calculator"
-
-    elif any(word in text for word in ["bye", "goodbye", "stop", "exit"]):
-        return "EXIT"
 
     return None
 
 
-# 🔹 Main Assistant
-def assistant():
-    lang = choose_language()
-
-    speak(translate_text("Assistant started", lang), lang)
-
-    while True:
-        text = listen()
-
-        if not text or text == "Error":
-            continue
-
-        english_text = translate_text(text, "en")
-
-        if any(word in english_text.lower() for word in ["exit", "bye", "goodbye", "stop"]):
-            speak(translate_text("Ok Bye", lang), lang)
-            break
-
-        command = handle_commands(english_text)
-
-        if command:
-            speak(translate_text(command, lang), lang)
-            continue
-
-        ai_reply = get_ai_response(english_text)
-        final_output = translate_text(ai_reply, lang)
-
-        speak(final_output, lang)
-
-
 if __name__ == "__main__":
-    assistant()
+    while True:
+        cmd = input("Enter Command: ")
+
+        result = handle_commands(cmd)
+
+        if result:
+            print(result)
+
+        if result == "Goodbye!":
+            break   
