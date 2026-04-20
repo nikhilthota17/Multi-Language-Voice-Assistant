@@ -6,3 +6,5 @@ python-dotenv
 groq
 gTTS
 yt-dlp
+streamlit
+streamlit-webrtc
