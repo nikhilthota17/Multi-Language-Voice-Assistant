@@ -192,12 +192,34 @@ with col2:
 
 # Start Listening Button
 st.markdown("<br>", unsafe_allow_html=True)
+
 btn_col1, btn_col2, btn_col3 = st.columns([1, 2, 1])
+
 with btn_col2:
-    if st.button("🎤 Tap to Speak", use_container_width=True):
-        st.session_state.system_status = "listening"
+    audio = mic_recorder(
+        start_prompt="🎤 Tap to Speak",
+        stop_prompt="⏹ Stop Recording",
+        just_once=True,
+        key="main_mic"
+    )
+
+if audio:
+    text = listen(audio["bytes"])
+
+    if text and text.lower() != "error":
+        st.session_state.messages.append({
+            "role": "user",
+            "content": text
+        })
+        st.session_state.system_status = "thinking"
         st.rerun()
 
+    else:
+        st.session_state.messages.append({
+            "role": "assistant",
+            "content": "Sorry, I missed that. Could you please try again?"
+        })
+        st.rerun()
 st.markdown("<br>", unsafe_allow_html=True)
 
 
