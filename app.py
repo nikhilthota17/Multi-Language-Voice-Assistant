@@ -216,14 +216,8 @@ if st.session_state.system_status == "listening":
     with st.spinner("🎙️ Listening carefully..."):
         text = listen()
 
-
-    if text == "VOICE_NOT_SUPPORTED":
-        st.session_state.messages.append({
-            "role": "assistant",
-            "content": "🎤 Voice input is not supported in web. Please type your message."
-        })
+    if text is None:
         st.session_state.system_status = "idle"
-        st.rerun()
 
     elif text and text.lower() != "error":
         st.session_state.messages.append({
