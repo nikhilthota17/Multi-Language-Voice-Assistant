@@ -1,39 +1,29 @@
 import speech_recognition as sr
-import os
+from streamlit_mic_recorder import mic_recorder
+import tempfile
 
 def listen():
-    try:
-        # Cloud check
-        if os.environ.get("STREAMLIT_SERVER_RUNNING"):
-            return "VOICE_NOT_SUPPORTED"
+    audio = mic_recorder(
+        start_prompt="🎤 Start Recording",
+        stop_prompt="⏹ Stop Recording",
+        just_once=True,
+        key="recorder"
+    )
+
+    if audio:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
+            f.write(audio["bytes"])
+            filename = f.name
 
         recognizer = sr.Recognizer()
 
-        with sr.Microphone() as source:
-            print("🎤 Adjusting noise...")
-            recognizer.adjust_for_ambient_noise(source, duration=1)
+        with sr.AudioFile(filename) as source:
+            audio_data = recognizer.record(source)
 
-            print("🎤 Listening...")
-            audio = recognizer.listen(source, timeout=5)
+        try:
+            text = recognizer.recognize_google(audio_data)
+            return text
+        except:
+            return "Error"
 
-        print("🔄 Recognizing...")
-        text = recognizer.recognize_google(audio)
-
-        print("✅ You said:", text)
-        return text
-
-    except sr.WaitTimeoutError:
-        print("⏱ Timeout - no speech")
-        return "Error"
-
-    except sr.UnknownValueError:
-        print("❌ Could not understand audio")
-        return "Error"
-
-    except sr.RequestError:
-        print("🌐 API error")
-        return "Error"
-
-    except Exception as e:
-        print("🔥 Error:", e)
-        return "Error"
+    return None
