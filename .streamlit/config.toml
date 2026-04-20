@@ -1,0 +1,29 @@
+[theme]
+primaryColor = "#0066cc"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f0f2f6"
+textColor = "#262730"
+font = "sans serif"
+
+[client]
+showErrorDetails = true
+toolbarMode = "viewer"
+
+[logger]
+level = "debug"
+
+[server]
+maxUploadSize = 200
+enableXsrfProtection = true
+headless = true
+
+[client.Media]
+mediaMinDurationSeconds = 0
+mediaMaxTime = 3600
+
+[webrtc]
+rtc_configuration = {
+  "iceServers": [
+    {"urls": ["stun:stun.l.google.com:19302"]}
+  ]
+}
