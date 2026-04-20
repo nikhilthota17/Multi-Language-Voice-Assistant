@@ -9,3 +9,4 @@ yt-dlp
 streamlit
 streamlit-webrtc
 pydub
+streamlit_mic_recorder
