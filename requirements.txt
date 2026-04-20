@@ -8,3 +8,4 @@ gTTS
 yt-dlp
 streamlit
 streamlit-webrtc
+pydub
