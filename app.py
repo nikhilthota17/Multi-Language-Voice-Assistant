@@ -18,25 +18,20 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-
 .stApp {
-    background: linear-gradient(-45deg, #E0C3FC, #8EC5FC, #ffdde1, #ee9ca7);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    background-color: #f8fafc;
     font-family: 'Inter', sans-serif;
     color: #1e293b;
 }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-
 #MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
+footer {display: none !important;}
 header {visibility: hidden;}
+
+[data-testid="stBottomBlockContainer"], [data-testid="stBottom"] {
+    background-color: transparent !important;
+    background: transparent !important;
+}
 
 /* Container resizing for better chat layout */
 .block-container {
@@ -44,33 +39,32 @@ header {visibility: hidden;}
     padding-top: 2rem !important;
 }
 
-
 .app-header {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    padding: 2.5rem 1rem;
-    border-radius: 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
     text-align: center;
     margin-bottom: 2rem;
-    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
 }
 
 .app-header h1 {
     font-weight: 800;
-    font-size: 3.2rem;
+    font-size: 2.8rem;
     margin: 0;
-    background: linear-gradient(45deg, #4f46e5, #ec4899, #8b5cf6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #1e293b;
     letter-spacing: -1px;
+}
+
+.app-header h1 span {
+    color: #4f46e5;
 }
 
 .app-header p {
     color: #475569;
     font-size: 1.15rem;
-    margin-top: 10px;
+    margin-top: 8px;
     font-weight: 500;
 }
 
@@ -80,14 +74,14 @@ div[data-testid="stChatInputContainer"] {
 }
 div[data-testid="stChatInput"] {
     background-color: #ffffff !important;
-    border: 2px solid #cbd5e1 !important;
-    border-radius: 2px !important;
-    box-shadow: 0 4px 15px  !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
 }
 div[data-testid="stChatInput"] textarea {
     color: #f9fafc !important;
     background-color: transparent !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
 }
 div[data-testid="stChatInput"] button {
     color: #4f46e5 !important; 
@@ -95,31 +89,32 @@ div[data-testid="stChatInput"] button {
 
 /* Buttons Styling */
 .stButton > button {
-    background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899) !important;
+    background-color: #4f46e5 !important;
     color: white !important;
     border: none !important;
     border-radius: 12px !important;
     padding: 0.6rem 1.5rem !important;
     font-weight: 600 !important;
     font-size: 1.1rem !important;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4) !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2) !important;
     width: 100%;
 }
 .stButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6) !important;
+    background-color: #4338ca !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3) !important;
 }
 
 /* Selectbox Styling */
 .stSelectbox > div > div {
-    background: rgba(255, 255, 255, 0.6) !important;
+    background: #ffffff !important;
     color: #1e293b !important;
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    border-radius: 12px;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px;
 }
 .stSelectbox label {
-    color: #334155 !important;
+    color: #040507 !important;
     font-weight: 600 !important;
 }
 
@@ -129,52 +124,48 @@ div[data-testid="stChatInput"] button {
 
 /* Assistant Chat Bubble (Left) */
 div[data-testid="stChatMessage"]:has(.assistant-msg-marker) {
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 20px 20px 20px 5px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px 16px 16px 4px;
     padding: 15px 20px;
     margin-bottom: 20px;
-    backdrop-filter: blur(10px);
     width: fit-content;
     max-width: 80%;
     margin-right: auto;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 div[data-testid="stChatMessage"]:has(.assistant-msg-marker) .stMarkdown p {
-    color: #000000;
-    font-weight: 400;
+    color: #040507;
+    font-weight: 500;
 }
 
 /* User Chat Bubble (Right) */
 div[data-testid="stChatMessage"]:has(.user-msg-marker) {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: #4f46e5;
     border: none;
-    border-radius: 20px 20px 5px 20px;
+    border-radius: 16px 16px 4px 16px;
     padding: 15px 20px;
     margin-bottom: 20px;
-    backdrop-filter: blur(10px);
     width: fit-content;
     max-width: 80%;
     margin-left: auto;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
     flex-direction: row-reverse;
 }
 div[data-testid="stChatMessage"]:has(.user-msg-marker) .stMarkdown {
     text-align: right;
 }
 div[data-testid="stChatMessage"]:has(.user-msg-marker) .stMarkdown p {
-    color: white;
+    color: #040507;
     font-weight: 500;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# =========================
-# APP HEADER
-# =========================
+
 st.markdown("""
 <div class="app-header">
-    <h1>✨ AI Multi-Language Voice Assistant</h1>
+    <h1>✨ <span>AI</span> Multi-Language Voice Assistant</h1>
     <p>Seamless intelligent conversations across languages.</p>
 </div>
 """, unsafe_allow_html=True)
@@ -223,9 +214,9 @@ if user_input := st.chat_input("Or type your message here..."):
 
 if st.session_state.system_status == "listening":
     with st.spinner("🎙️ Listening carefully..."):
-        text = listen()   # ✅ FIRST get input
+        text = listen()
 
-    # ✅ THEN check
+
     if text == "VOICE_NOT_SUPPORTED":
         st.session_state.messages.append({
             "role": "assistant",
