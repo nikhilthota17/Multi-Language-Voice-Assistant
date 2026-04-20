@@ -5,6 +5,7 @@ from translator import translate_text
 from ai_response import get_ai_response
 from text_to_speech import speak
 from main import handle_commands
+from streamlit_mic_recorder import mic_recorder
 
 # =========================
 # PAGE CONFIG
