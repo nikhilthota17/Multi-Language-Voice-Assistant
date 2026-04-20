@@ -54,10 +54,13 @@ streamlit run app.py
 
 | Issue | Solution |
 |-------|----------|
-| "Audio file could not be read" | ✅ Fixed - speech_to_text.py now handles webm format |
-| "GROQ_API_KEY missing" | Add it to Streamlit Secrets in "Manage app" |
+| "installer returned a non-zero exit code" | ✅ Fixed - removed broken ffmpeg-python, using standard library instead |
+| "Error during processing dependencies" | Make sure `requirements.txt` has no broken packages - should install cleanly now |
+| "Audio file could not be read" | ✅ Fixed - speech_to_text.py now handles audio bytes properly |
+| "GROQ_API_KEY missing" | Add it to Streamlit Secrets in "Manage app" → Settings → Secrets |
 | Audio not recording | Check browser permissions for microphone |
-| Slow response time | Use shorter `max_tokens` in ai_response.py |
+| Slow response time | Use shorter `max_tokens` in ai_response.py (currently 60) |
+| ModuleNotFoundError with dependencies | Wait 5 mins after deployment for all packages to install, then refresh browser |
 
 ## Performance Tips
 
